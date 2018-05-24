@@ -37,6 +37,13 @@ import de.codecentric.boot.admin.web.client.HttpHeadersProvider;
 @EnableConfigurationProperties(KeycloakSpringBootProperties.class)
 class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
+	/**
+	 * {@link HttpHeadersProvider} used to populate the {@link HttpHeaders} for
+	 * accessing the state of the disovered clients.
+	 * 
+	 * @param keycloak
+	 * @return
+	 */
 	@Bean
 	public HttpHeadersProvider httpHeadersProvider(Keycloak keycloak) {
 		return (app) -> {
@@ -47,6 +54,12 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 		};
 	}
 
+	/**
+	 * The Keycloak Admin client that provides the service-account Access-Token
+	 * 
+	 * @param props
+	 * @return
+	 */
 	@Bean
 	public Keycloak keycloak(KeycloakSpringBootProperties props) {
 		return KeycloakBuilder.builder() //

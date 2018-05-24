@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 class KeycloalController {
 
+	/**
+	 * Propagates the logout to the Keycloak infrastructure
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("/admin/logout")
 	public String logout(HttpServletRequest request) throws Exception {
 		request.logout();
