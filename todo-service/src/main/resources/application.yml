@@ -1,0 +1,25 @@
+server:
+  port: 30002
+
+keycloak:
+  realm: bootadmin
+  auth-server-url: http://localhost:8080/auth
+  resource: app-todo
+  credentials:
+     secret: 2cc653a3-24cc-4241-896d-813a726f9b33
+  ssl-required: external
+  principal-attribute: preferred_username
+  autodetect-bearer-only: true
+  use-resource-role-mappings: true
+  token-minimum-time-to-live: 30
+
+management:
+  context-path: /mgmt
+  security:
+    roles:
+    - ACTUATOR
+
+spring:
+  boot: 
+    admin:
+      url: http://localhost:30001
