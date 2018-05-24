@@ -1,6 +1,6 @@
 # Simple example for protecting Spring Boot Admin & Client Actuator Endpoints with Keycloak
 
-This example consists of the spring-boot-admin server application `admin-service` which monitors
+This example consists of the [spring-boot-admin](https://github.com/codecentric/spring-boot-admin) server application `admin-service` which monitors
 one other service instance `todo-service`. The `admin-service` exposes the spring-boot admin
 UI via the `/admin` endpoint which is protected with Keycloak.
 The client actuator endpoints of the `todo-service` are also protected with Keycloak and accessed
