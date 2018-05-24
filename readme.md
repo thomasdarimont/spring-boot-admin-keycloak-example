@@ -26,9 +26,9 @@ Run `mvn clean package` in the project root.
 # Run the examples
 
 ## Run the todo-service
-The simple todo-service can be reached via http://localhost:30002  
+The simple `todo-service` can be reached via http://localhost:30002  
 To start the service just run `java -jar todo-service/target/*.jar`
 
 ## Run the admin-service
-The admin-service can be reached via http://localhost:30001/admin  
+The `admin-service` can be reached via http://localhost:30001/admin  
 To start the service just run `java -jar admin-service/target/*.jar`
