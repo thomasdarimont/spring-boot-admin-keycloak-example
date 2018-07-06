@@ -13,11 +13,6 @@ keycloak:
   use-resource-role-mappings: true
   token-minimum-time-to-live: 30
 
-#spring:
-#  boot: 
-#    admin:
-#      url: http://localhost:30001
-
 management:
   endpoints:
     web:
