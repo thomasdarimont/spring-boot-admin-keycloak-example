@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.13.RELEASE</version>
+		<version>2.0.3.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -23,8 +23,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<keycloak.version>3.4.3.Final</keycloak.version>
-		<spring-boot-admin.version>1.5.7</spring-boot-admin.version>
+		<keycloak.version>4.1.0.Final</keycloak.version>
+		<spring-boot-admin.version>2.0.1</spring-boot-admin.version>
 		<resteasy.version>3.0.24.Final</resteasy.version>
 	</properties>
 
@@ -40,22 +40,20 @@
 
 		<dependency>
 			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-server</artifactId>
+			<artifactId>spring-boot-admin-starter-server</artifactId>
 			<version>${spring-boot-admin.version}</version>
 		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>de.codecentric</groupId> -->
+<!-- 			<artifactId>spring-boot-admin-server-ui</artifactId> -->
+<!-- 			<version>${spring-boot-admin.version}</version> -->
+<!-- 		</dependency> -->
 
 		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-server-ui</artifactId>
-			<version>${spring-boot-admin.version}</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-server-ui-login</artifactId>
-			<version>${spring-boot-admin.version}</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
@@ -98,6 +96,14 @@
 				<groupId>org.keycloak.bom</groupId>
 				<artifactId>keycloak-adapter-bom</artifactId>
 				<version>${keycloak.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Finchley.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

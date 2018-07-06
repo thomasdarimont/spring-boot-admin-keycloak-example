@@ -23,6 +23,7 @@ public class TodoServiceApplication {
 	@Scheduled(fixedRate = 5_000)
 	public void doSomework() {
 
+		// useful to demonstrate log dynamic level configuration
 		log.info("work info");
 		log.debug("work debug");
 		log.trace("work trace");

@@ -1,14 +1,13 @@
-# Protecting Spring Boot Admin & Actuator Endpoints with Keycloak
+# Protecting Spring Boot Admin 2.x & Actuator Endpoints with Keycloak 4.x
 
-This example consists of a [spring-boot-admin](https://github.com/codecentric/spring-boot-admin) server application `admin-service` which monitors
-one other service instance `todo-service`. The `admin-service` exposes the spring-boot admin
-UI via the `/admin` endpoint which is protected with Keycloak.
-The client actuator endpoints of the `todo-service` are also protected with Keycloak and accessed
-via a `service-account` configured for the `admin-service` client.
+This example consists of a [spring-boot-admin 2.x](https://github.com/codecentric/spring-boot-admin) server application `admin-service` which monitors
+another application called `todo-service` build with Spring Boot 2.x.  
+The `admin-service` exposes the spring-boot admin UI via the `/admin` endpoint which is protected with Keycloak.  
+The actuator endpoints of the `todo-service` are also protected with Keycloak and accessed via a `service-account` configured for the `admin-service` Keycloak client.
 
 # Setup Keycloak
 
-Import `bootadmin` demo realm by executing the following command in the `KEYCLOAK_HOME` directory. 
+Import `bootadmin` demo realm by executing the following command in the `KEYCLOAK_HOME` directory.   
 ```
  bin/standalone.sh -Dkeycloak.migration.action=import \
   -Dkeycloak.migration.provider=singleFile \
@@ -16,7 +15,7 @@ Import `bootadmin` demo realm by executing the following command in the `KEYCLOA
   -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
 ```
 
-After that Keycloak should be running with the realm loaded in Keycloaks In-Memory Database.  
+After that Keycloak should be running with the `bootadmin` realm loaded in Keycloaks in-memory database.  
 You can stop Keycloak with `CTRL+C`. You can start it again by running `bin/standalone.sh`.
 
 # Build the examples

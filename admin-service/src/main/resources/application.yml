@@ -12,8 +12,6 @@ spring:
           instances:
             app-todo:
               - uri: http://localhost:30002
-                metadata:
-                  management.context-path: /mgmt
 
 keycloak:
   realm: bootadmin

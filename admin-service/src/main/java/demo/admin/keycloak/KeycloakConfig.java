@@ -31,7 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import de.codecentric.boot.admin.web.client.HttpHeadersProvider;
+import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 
 @KeycloakConfiguration
 @EnableConfigurationProperties(KeycloakSpringBootProperties.class)
@@ -45,7 +45,7 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 	 * @return
 	 */
 	@Bean
-	public HttpHeadersProvider httpHeadersProvider(Keycloak keycloak) {
+	public HttpHeadersProvider keycloakBearerAuthHeaderProvider(Keycloak keycloak) {
 		return (app) -> {
 			String accessToken = keycloak.tokenManager().getAccessTokenString();
 			HttpHeaders headers = new HttpHeaders();
@@ -76,7 +76,7 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 		super.configure(http);
 
 		http //
-				.csrf().disable() //
+				.csrf().disable() // for the sake of brevity...
 				.authorizeRequests() //
 				.antMatchers("/**/*.css", "/admin/img/**", "/admin/third-party/**").permitAll() //
 				.antMatchers("/admin").hasRole("ADMIN") //
