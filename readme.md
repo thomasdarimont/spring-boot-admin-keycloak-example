@@ -2,8 +2,7 @@
 
 This example consists of a [spring-boot-admin](https://github.com/codecentric/spring-boot-admin) server application `admin-service` which monitors
 another application called `todo-service` build with Spring Boot.  
-The `admin-service` exposes the Spring Boot Admin UI via the `/admin` endpoint which is protected by the Keycloak adapter.  
-The actuator endpoints of the `todo-service` are also protected with Keycloak and accessed via a `service-account` configured for the `admin-service` Keycloak client.
+The `admin-service` exposes the Spring Boot Admin UI via the `/admin` endpoint which is protected by the Keycloak adapter. The actuator endpoints of the `todo-service` are also protected with Keycloak and accessed via a `service-account` configured for the `admin-service` Keycloak client.
 
 This example is currently build with:
 - Spring Boot 2.0.3
