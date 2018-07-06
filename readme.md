@@ -1,9 +1,19 @@
-# Protecting Spring Boot Admin 2.x & Actuator Endpoints with Keycloak 4.x
+# Protecting Spring Boot Admin & Actuator Endpoints with Keycloak
 
-This example consists of a [spring-boot-admin 2.x](https://github.com/codecentric/spring-boot-admin) server application `admin-service` which monitors
-another application called `todo-service` build with Spring Boot 2.x.  
+This example consists of a [spring-boot-admin](https://github.com/codecentric/spring-boot-admin) server application `admin-service` which monitors
+another application called `todo-service` build with Spring Boot.  
 The `admin-service` exposes the spring-boot admin UI via the `/admin` endpoint which is protected with Keycloak.  
 The actuator endpoints of the `todo-service` are also protected with Keycloak and accessed via a `service-account` configured for the `admin-service` Keycloak client.
+
+This example is currently build with:
+- Spring Boot 2.0.3
+- Spring Boot Admin 2.0.1
+- Keycloak 4.1.0 
+
+Note that an older version of this example is available in the 1.5.x branch, which uses:
+- Spring Boot 1.5.13
+- Spring Boot Admin 1.5.7
+- Keycloak 3.4.3.Final.
 
 # Setup Keycloak
 
