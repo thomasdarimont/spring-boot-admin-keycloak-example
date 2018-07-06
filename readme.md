@@ -9,7 +9,7 @@ This example is currently build with:
 - Spring Boot Admin 2.0.1
 - Keycloak 4.1.0 
 
-Note that an older version of this example is available in the 1.5.x branch, which uses:
+Note that an older version of this example is available in the [1.5.x](https://github.com/thomasdarimont/spring-boot-admin-keycloak-example/tree/1.5.x) branch, which uses:
 - Spring Boot 1.5.13
 - Spring Boot Admin 1.5.7
 - Keycloak 3.4.3.Final.
