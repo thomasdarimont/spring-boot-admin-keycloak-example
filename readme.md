@@ -5,8 +5,8 @@ another application called `todo-service` build with Spring Boot.
 The `admin-service` exposes the Spring Boot Admin UI via the `/admin` endpoint which is protected by the Keycloak adapter. The actuator endpoints of the `todo-service` are also protected with Keycloak and accessed via a `service-account` configured for the `admin-service` Keycloak client.
 
 This example is currently build with:
-- Spring Boot 2.0.3
-- Spring Boot Admin 2.0.1
+- Spring Boot 2.0.4
+- Spring Boot Admin 2.0.2
 - Keycloak 4.1.0 
 
 Note that an older version of this example is available in the [1.5.x](https://github.com/thomasdarimont/spring-boot-admin-keycloak-example/tree/1.5.x) branch, which uses:
