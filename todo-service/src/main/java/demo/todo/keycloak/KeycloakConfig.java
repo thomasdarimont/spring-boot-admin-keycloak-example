@@ -55,7 +55,7 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	/**
 	 * Load Keycloak configuration from application.properties or application.yml
-	 * 
+	 *
 	 * @return
 	 */
 	@Bean
@@ -65,7 +65,7 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	/**
 	 * Use {@link KeycloakAuthenticationProvider}
-	 * 
+	 *
 	 * @param auth
 	 * @throws Exception
 	 */
@@ -94,7 +94,7 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 	/**
 	 * Allows to inject requests scoped wrapper for {@link KeycloakSecurityContext}.
-	 * 
+	 *
 	 * Returns the {@link KeycloakSecurityContext} from the Spring
 	 * {@link ServletRequestAttributes}'s {@link Principal}.
 	 * <p>
