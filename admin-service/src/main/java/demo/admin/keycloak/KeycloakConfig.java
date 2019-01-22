@@ -37,122 +37,122 @@ import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 @EnableConfigurationProperties(KeycloakSpringBootProperties.class)
 class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
-	/**
-	 * {@link HttpHeadersProvider} used to populate the {@link HttpHeaders} for
-	 * accessing the state of the disovered clients.
-	 * 
-	 * @param keycloak
-	 * @return
-	 */
-	@Bean
-	public HttpHeadersProvider keycloakBearerAuthHeaderProvider(Keycloak keycloak) {
-		return (app) -> {
-			String accessToken = keycloak.tokenManager().getAccessTokenString();
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", "Bearer " + accessToken);
-			return headers;
-		};
-	}
+    /**
+     * {@link HttpHeadersProvider} used to populate the {@link HttpHeaders} for
+     * accessing the state of the disovered clients.
+     *
+     * @param keycloak
+     * @return
+     */
+    @Bean
+    public HttpHeadersProvider keycloakBearerAuthHeaderProvider(Keycloak keycloak) {
+        return (app) -> {
+            String accessToken = keycloak.tokenManager().getAccessTokenString();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+            return headers;
+        };
+    }
 
-	/**
-	 * The Keycloak Admin client that provides the service-account Access-Token
-	 * 
-	 * @param props
-	 * @return
-	 */
-	@Bean
-	public Keycloak keycloak(KeycloakSpringBootProperties props) {
-		return KeycloakBuilder.builder() //
-				.serverUrl(props.getAuthServerUrl()) //
-				.realm(props.getRealm()) //
-				.grantType(OAuth2Constants.CLIENT_CREDENTIALS) //
-				.clientId(props.getResource()) //
-				.clientSecret((String) props.getCredentials().get("secret")) //
-				.build();
-	}
+    /**
+     * The Keycloak Admin client that provides the service-account Access-Token
+     *
+     * @param props
+     * @return
+     */
+    @Bean
+    public Keycloak keycloak(KeycloakSpringBootProperties props) {
+        return KeycloakBuilder.builder() //
+                .serverUrl(props.getAuthServerUrl()) //
+                .realm(props.getRealm()) //
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS) //
+                .clientId(props.getResource()) //
+                .clientSecret((String) props.getCredentials().get("secret")) //
+                .build();
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		super.configure(http);
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
 
-		http //
-				.csrf().disable() // for the sake of brevity...
-				.authorizeRequests() //
-				.antMatchers("/**/*.css", "/admin/img/**", "/admin/third-party/**").permitAll() //
-				.antMatchers("/admin").hasRole("ADMIN") //
-				.anyRequest().permitAll() //
-		;
-	}
+        http //
+                .csrf().disable() // for the sake of brevity...
+                .authorizeRequests() //
+                .antMatchers("/**/*.css", "/admin/img/**", "/admin/third-party/**").permitAll() //
+                .antMatchers("/admin").hasRole("ADMIN") //
+                .anyRequest().permitAll() //
+        ;
+    }
 
-	/**
-	 * Load Keycloak configuration from application.properties or application.yml
-	 * 
-	 * @return
-	 */
-	@Bean
-	public KeycloakConfigResolver keycloakConfigResolver() {
-		return new KeycloakSpringBootConfigResolver();
-	}
+    /**
+     * Load Keycloak configuration from application.properties or application.yml
+     *
+     * @return
+     */
+    @Bean
+    public KeycloakConfigResolver keycloakConfigResolver() {
+        return new KeycloakSpringBootConfigResolver();
+    }
 
-	/**
-	 * Use {@link KeycloakAuthenticationProvider}
-	 * 
-	 * @param auth
-	 * @throws Exception
-	 */
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    /**
+     * Use {@link KeycloakAuthenticationProvider}
+     *
+     * @param auth
+     * @throws Exception
+     */
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-		SimpleAuthorityMapper grantedAuthorityMapper = new SimpleAuthorityMapper();
-		grantedAuthorityMapper.setPrefix("ROLE_");
-		grantedAuthorityMapper.setConvertToUpperCase(true);
+        SimpleAuthorityMapper grantedAuthorityMapper = new SimpleAuthorityMapper();
+        grantedAuthorityMapper.setPrefix("ROLE_");
+        grantedAuthorityMapper.setConvertToUpperCase(true);
 
-		KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-		keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(grantedAuthorityMapper);
-		auth.authenticationProvider(keycloakAuthenticationProvider);
-	}
+        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(grantedAuthorityMapper);
+        auth.authenticationProvider(keycloakAuthenticationProvider);
+    }
 
-	@Bean
-	@Override
-	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-		return new RegisterSessionAuthenticationStrategy(buildSessionRegistry());
-	}
+    @Bean
+    @Override
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        return new RegisterSessionAuthenticationStrategy(buildSessionRegistry());
+    }
 
-	@Bean
-	protected SessionRegistry buildSessionRegistry() {
-		return new SessionRegistryImpl();
-	}
+    @Bean
+    protected SessionRegistry buildSessionRegistry() {
+        return new SessionRegistryImpl();
+    }
 
-	/**
-	 * Allows to inject requests scoped wrapper for {@link KeycloakSecurityContext}.
-	 * 
-	 * Returns the {@link KeycloakSecurityContext} from the Spring
-	 * {@link ServletRequestAttributes}'s {@link Principal}.
-	 * <p>
-	 * The principal must support retrieval of the KeycloakSecurityContext, so at
-	 * this point, only {@link KeycloakPrincipal} values and
-	 * {@link KeycloakAuthenticationToken} are supported.
-	 *
-	 * @return the current <code>KeycloakSecurityContext</code>
-	 */
-	@Bean
-	@Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-	public KeycloakSecurityContext provideKeycloakSecurityContext() {
+    /**
+     * Allows to inject requests scoped wrapper for {@link KeycloakSecurityContext}.
+     * <p>
+     * Returns the {@link KeycloakSecurityContext} from the Spring
+     * {@link ServletRequestAttributes}'s {@link Principal}.
+     * <p>
+     * The principal must support retrieval of the KeycloakSecurityContext, so at
+     * this point, only {@link KeycloakPrincipal} values and
+     * {@link KeycloakAuthenticationToken} are supported.
+     *
+     * @return the current <code>KeycloakSecurityContext</code>
+     */
+    @Bean
+    @Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public KeycloakSecurityContext provideKeycloakSecurityContext() {
 
-		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		Principal principal = attributes.getRequest().getUserPrincipal();
-		if (principal == null) {
-			return null;
-		}
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        Principal principal = attributes.getRequest().getUserPrincipal();
+        if (principal == null) {
+            return null;
+        }
 
-		if (principal instanceof KeycloakAuthenticationToken) {
-			principal = Principal.class.cast(KeycloakAuthenticationToken.class.cast(principal).getPrincipal());
-		}
+        if (principal instanceof KeycloakAuthenticationToken) {
+            principal = Principal.class.cast(KeycloakAuthenticationToken.class.cast(principal).getPrincipal());
+        }
 
-		if (principal instanceof KeycloakPrincipal) {
-			return KeycloakPrincipal.class.cast(principal).getKeycloakSecurityContext();
-		}
+        if (principal instanceof KeycloakPrincipal) {
+            return KeycloakPrincipal.class.cast(principal).getKeycloakSecurityContext();
+        }
 
-		return null;
-	}
+        return null;
+    }
 }
