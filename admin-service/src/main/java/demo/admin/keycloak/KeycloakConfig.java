@@ -90,24 +90,16 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     private <T> T getFieldValue(Object instance, String fieldName) {
 
-        try {
-            Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
-            ReflectionUtils.makeAccessible(field);
-            return (T) field.get(instance);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not access field " + fieldName + " of " + instance, e);
-        }
+        Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
+        ReflectionUtils.makeAccessible(field);
+        return (T) ReflectionUtils.getField(field, instance);
     }
 
     private void setFieldValue(Object instance, String fieldName, Object value) {
 
-        try {
-            Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
-            ReflectionUtils.makeAccessible(field);
-            field.set(instance, value);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not access field " + fieldName + " of " + instance, e);
-        }
+        Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
+        ReflectionUtils.makeAccessible(field);
+        ReflectionUtils.setField(field, instance, value);
     }
 
     @Override
