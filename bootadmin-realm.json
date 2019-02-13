@@ -1,7 +1,7 @@
 {
   "id" : "bootadmin",
   "realm" : "bootadmin",
-  "notBefore" : 0,
+  "notBefore" : 1550065077,
   "revokeRefreshToken" : false,
   "refreshTokenMaxReuse" : 0,
   "accessTokenLifespan" : 300,
@@ -364,7 +364,7 @@
       "app-admin" : [ "admin" ],
       "account" : [ "manage-account", "view-profile" ]
     },
-    "notBefore" : 0,
+    "notBefore" : 1550065826,
     "groups" : [ ]
   } ],
   "scopeMappings" : [ {

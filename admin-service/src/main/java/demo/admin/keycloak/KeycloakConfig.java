@@ -1,7 +1,8 @@
 package demo.admin.keycloak;
 
-import java.security.Principal;
-
+import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
+import org.apache.el.util.ReflectionUtil;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.OAuth2Constants;
@@ -29,11 +30,13 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
+import java.lang.reflect.Field;
+import java.security.Principal;
 
 @KeycloakConfiguration
 @EnableConfigurationProperties(KeycloakSpringBootProperties.class)
@@ -64,6 +67,7 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
      */
     @Bean
     public Keycloak keycloak(KeycloakSpringBootProperties props) {
+
         Keycloak keycloak = KeycloakBuilder.builder() //
                 .serverUrl(props.getAuthServerUrl()) //
                 .realm(props.getRealm()) //
@@ -72,7 +76,38 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .clientSecret((String) props.getCredentials().get("secret")) //
                 .build();
 
+        // hack use custom token manager to configure offline_access
+        CustomTokenManager.CustomConfig config = new CustomTokenManager.CustomConfig(getFieldValue(keycloak, "config"));
+        config.setOfflineAccess(true);
+
+        ResteasyClient client = getFieldValue(keycloak, "client");
+        CustomTokenManager ctm = new CustomTokenManager(config, client);
+
+        setFieldValue(keycloak, "tokenManager", ctm);
+
         return keycloak;
+    }
+
+    private <T> T getFieldValue(Object instance, String fieldName) {
+
+        try {
+            Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
+            ReflectionUtils.makeAccessible(field);
+            return (T) field.get(instance);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not access field " + fieldName + " of " + instance, e);
+        }
+    }
+
+    private void setFieldValue(Object instance, String fieldName, Object value) {
+
+        try {
+            Field field = ReflectionUtils.findField(instance.getClass(), fieldName);
+            ReflectionUtils.makeAccessible(field);
+            field.set(instance, value);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not access field " + fieldName + " of " + instance, e);
+        }
     }
 
     @Override
