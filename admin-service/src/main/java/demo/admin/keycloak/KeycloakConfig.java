@@ -6,6 +6,7 @@ import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.adapters.KeycloakConfigResolver;
+import org.keycloak.adapters.springboot.KeycloakBaseSpringBootConfiguration;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -17,6 +18,7 @@ import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpHeaders;
@@ -62,13 +64,15 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
      */
     @Bean
     public Keycloak keycloak(KeycloakSpringBootProperties props) {
-        return KeycloakBuilder.builder() //
+        Keycloak keycloak = KeycloakBuilder.builder() //
                 .serverUrl(props.getAuthServerUrl()) //
                 .realm(props.getRealm()) //
                 .grantType(OAuth2Constants.CLIENT_CREDENTIALS) //
                 .clientId(props.getResource()) //
                 .clientSecret((String) props.getCredentials().get("secret")) //
                 .build();
+
+        return keycloak;
     }
 
     @Override
@@ -154,5 +158,13 @@ class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
         }
 
         return null;
+    }
+
+    /**
+     * Ensures the correct registration of KeycloakSpringBootConfigResolver when Keycloaks AutoConfiguration
+     * is explicitly turned off in application.yml {@code keycloak.enabled: false}.
+     */
+    @Configuration
+    static class CustomKeycloakBaseSpringBootConfiguration extends KeycloakBaseSpringBootConfiguration {
     }
 }

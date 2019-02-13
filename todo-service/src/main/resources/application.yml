@@ -6,14 +6,22 @@ server:
   port: 30002
 
 keycloak:
+  # turn off keycloak spring boot auto-configuration:
+  # We only want to use Spring Security without servlet container specific infrastructure
+  # This allows us to pull the Keycloak configuration from here instead of keycloak.json
+  enabled: false
+
   realm: bootadmin
   auth-server-url: http://localhost:8080/auth
+  # The client_id
   resource: app-todo
   credentials:
-     secret: 2cc653a3-24cc-4241-896d-813a726f9b33
+    # The client_secret
+    secret: 2cc653a3-24cc-4241-896d-813a726f9b33
   ssl-required: external
-  principal-attribute: preferred_username
   autodetect-bearer-only: true
+  # Configures what principal.getName() will return
+  principal-attribute: preferred_username
   use-resource-role-mappings: true
   token-minimum-time-to-live: 30
 
