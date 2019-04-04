@@ -1,5 +1,6 @@
 package demo.todo;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
@@ -36,6 +37,6 @@ class TodoController {
 
 	@GetMapping("/")
 	Object getTodos() {
-		return Arrays.asList("Prepare talk...");
+		return Arrays.asList("Prepare talk..." + Instant.now());
 	}
 }
